@@ -1,78 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'src/locations.dart' as locations;
-//importamos la dependencia para obtener ubicacion actual
-import 'package:geolocator/geolocator.dart';
+import './estadisticos/Estadisticas.dart';
+import './unidadesSalud/Unidades.dart';
+import './materialDifusion/Difusion.dart';
+//import './tramitesServicios/Servicios.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return MyAppState();
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  //variables para la geolocalizacion
-  TextEditingController locationController = TextEditingController();
-  static LatLng _initialPosition;
-  LatLng _lastPosition = _initialPosition;
-  //dsa
-  final Map<String, Marker> _markers = {};
-
-
-  Future<void> _onMapCreated(GoogleMapController controller) async {
-    final googleOffices = await locations.getGoogleOffices();
-    setState(() {
-      _markers.clear();
-      for (final office in googleOffices.offices) {
-        final marker = Marker(
-          markerId: MarkerId(office.name),
-          position: LatLng(office.lat, office.lng),
-          infoWindow: InfoWindow(
-            title: office.name,
-            snippet: office.address,
-          ),
-        );
-        _markers[office.name] = marker;
-      }
-    });
-  }
+class MyAppState extends State<MyApp>{
+  int _selectedPage = 0;
+  final _pageOptions = [
+    Unidades(),
+    ServiciosData(),
+    Difusion(),
+    Estadisticas()
+  ];
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getUserLocation();
-  }
-  @override
-  Widget build(BuildContext context) => MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Ubicaciones'),
-        backgroundColor: Colors.blue[300],
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: const LatLng(19.590933, -88.644348),
-          zoom: 7,
+      home: Scaffold(
+        //appBar:AppBar(title: Text('Bottom Nav Bar'),),
+        body: _pageOptions[_selectedPage],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedPage,
+          onTap: (int index){
+            setState(() {
+              _selectedPage = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.location_searching),
+                title: Text('Unidades')
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.pregnant_woman),
+                title: Text('Servicios')
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.announcement),
+                title: Text('Eventos')
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.equalizer),
+                title: Text('Estadísticas')
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
         ),
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
-        compassEnabled: true,
-        markers: _markers.values.toSet(),
       ),
-    ),
-  );
-
-  void _getUserLocation()  async {
-        Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
-        setState(() {
-         _initialPosition = LatLng(position.latitude, position.longitude);
-         locationController.text = placemark[0].name;
-        });
-      }
-
+    );
+  }
 }
+
+// BottomNavigationBar: https://www.youtube.com/watch?v=n_FRmFm9Tyw
