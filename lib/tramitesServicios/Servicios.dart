@@ -72,9 +72,9 @@ class _ServiciosDataState extends State<ServiciosData>{
                               ),
                             )
                         ),
-                        child: new Column(
+                        child:  Column(
                           children: <Widget>[
-                            new ListTile(
+                             ListTile(
                                 title: Text('${tramiteServicio['nombre_ts'].toUpperCase()}', style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal)),
                                 subtitle: Text('${tramiteServicio['clasificacion_ts'].toUpperCase()}', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 200,200, 200)))
                             ),

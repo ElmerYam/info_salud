@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './estadisticos/Estadisticas.dart';
 import './unidadesSalud/Unidades.dart';
 import './materialDifusion/Difusion.dart';
-//import './tramitesServicios/Servicios.dart';
+import './tramitesServicios/Servicios.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +18,7 @@ class MyAppState extends State<MyApp>{
   int _selectedPage = 0;
   final _pageOptions = [
     Unidades(),
-    ServiciosData(),
+    Servicios(),
     Difusion(),
     Estadisticas()
   ];
