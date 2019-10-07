@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'DetallesDifusion.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:toast/toast.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(Difusion());
@@ -27,6 +29,11 @@ class DifusionData extends StatefulWidget{
 }
 
 class _DifusionDataState extends State<DifusionData>{
+  String titulo;
+  String descripcion;
+  String imagen;
+  String tipo;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +48,7 @@ class _DifusionDataState extends State<DifusionData>{
               size: 20.0,
               color: Colors.white,
             ),
-            onPressed: (){
-              print("tested again");
-            },
+            onPressed: ()=> print("searching"),
           ),
         ],
       ),
@@ -60,12 +65,28 @@ class _DifusionDataState extends State<DifusionData>{
               itemBuilder: (context, index){
                 DocumentSnapshot materialDifusion=snapshot.data.documents[index];
                 return Stack(
-                  children: <Widget>[
-                    Column(
-                        children: <Widget>[
+                  children: <Widget>[                    
+                    InkWell(
+                      onTap: (){
+                        titulo=materialDifusion['titulo_material_dif'];
+                        descripcion=materialDifusion['descripcion_material_dif'];
+                        imagen=materialDifusion['url_imagen_material_dif'];
+                        tipo=materialDifusion['tipo_material_dif'];
+                        Toast.show("msg", context,duration: 3,gravity: Toast.BOTTOM,backgroundColor: Color.fromARGB(180, 0, 0, 0));
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context)=>DetallesDifusion(
+                              titulo: titulo,
+                              descripcion: descripcion,
+                              imagen: imagen,
+                              tipo: tipo,
+                              )));
+                      },
+                      child: Column(
+                        children: <Widget>[                          
                           Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 350.0,
+                            width: MediaQuery.of(context).size.width,                            
                             child: Padding(
                               padding: EdgeInsets.only(top:8.0,bottom:8.0),
                               child:Material(
@@ -76,17 +97,23 @@ class _DifusionDataState extends State<DifusionData>{
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Column(
-                                      children: <Widget>[
+                                      children: <Widget>[                                        
                                         Container(
                                           width: MediaQuery.of(context).size.width,
-                                          height: 200.0,
-                                          child: Image.network('${materialDifusion['url_imagen_material_dif']}',fit: BoxFit.fill,
+                                          height: 200.0,  
+                                          child:FadeInImage.memoryNetwork(
+                                            placeholder: kTransparentImage,
+                                            image: '${materialDifusion['url_imagen_material_dif']}',
+                                            fit: BoxFit.fill,
                                           ),
                                         ),
                                         SizedBox(height: 10.0),
-                                        Text('${materialDifusion['titulo_material_dif']}', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-                                        SizedBox(height: 10.0),
-                                        Text('${materialDifusion['tipo_material_dif']}', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.blueGrey),),
+                                        Text('${materialDifusion['titulo_material_dif']}', 
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,                                            
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -95,7 +122,25 @@ class _DifusionDataState extends State<DifusionData>{
                             ),
                           ),
                         ]
-                    ),
+                      ),
+                    ),                     
+                    Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Text('${materialDifusion['tipo_material_dif'].toUpperCase()}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 5.0,
+                              color: Colors.black87,
+                              offset: Offset(0,0)
+                            )
+                          ],
+                          ),
+                        ),
+                    ),                    
                   ],
                 );
               },
