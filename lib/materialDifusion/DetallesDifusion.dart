@@ -10,26 +10,36 @@ class DetallesDifusion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tipo),
+        title: Text(tipo, style: TextStyle(color: Colors.blue),),
+        backgroundColor: Colors.black,        
       ),
       body: ListView(        
           children:<Widget>[
-            Card(
-              child: Column(
-                children: <Widget>[
+            Column(
+                children: <Widget>[                  
                   Container(
-                    color: Colors.orange,
-                    child: Text(titulo),
-                  ),                  
-                  SizedBox(height: 10.0,),
-                  Container(
-                    child: Image.network(imagen),
+                    child: Image.network(imagen, fit: BoxFit.fill,),
                   ),
+                  tipo!='infografia'? Container(
+                    padding: EdgeInsets.all(6.0),
+                    //color: Colors.white,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black12,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                    child: Text(titulo, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w800)),
+                  ):
                   SizedBox(height: 10.0,),
-                  Text(descripcion),
+                  tipo!='infografia'? Container(
+                    padding: EdgeInsets.all(15.0),
+                    child:Text(descripcion),):
+                    Container(),
                 ],
               ),
-          ),
           ],
       ),
     );

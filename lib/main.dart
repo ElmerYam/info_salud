@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp>{
-  int _selectedPage = 0;
+  int _selectedPage = 1;
   final _pageOptions = [
     Unidades(),
     Servicios(),
@@ -51,7 +51,7 @@ class MyAppState extends State<MyApp>{
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.announcement),
-                title: Text('Eventos')
+                title: Text('Publicaciones')
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.equalizer),

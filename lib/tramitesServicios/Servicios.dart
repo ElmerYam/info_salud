@@ -26,6 +26,18 @@ class ServiciosData extends StatefulWidget{
   _ServiciosDataState createState() => _ServiciosDataState();
 }
 
+class Servicio{
+  String clasificacion;
+  String costo;
+  String descripcion;
+  String modalidad;
+  String nombre;
+  String observaciones;
+  String tiempo_respuesta;
+
+  Servicio({this.clasificacion, this.costo, this.descripcion, this.modalidad, this.nombre, this.observaciones, this.tiempo_respuesta});
+}
+
 class _ServiciosDataState extends State<ServiciosData>{
   @override
   Widget build(BuildContext context) {
@@ -61,7 +73,16 @@ class _ServiciosDataState extends State<ServiciosData>{
                 return Card(
                   child: InkWell(
                       onTap: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>DetallesServicios()));
+                        final servicio = Servicio(
+                          clasificacion: tramiteServicio['clasificacion_ts'],
+                          costo: tramiteServicio['costo_ts'],
+                          descripcion: tramiteServicio['descripcion_ts'],
+                          modalidad: tramiteServicio['modalidad_ts'],
+                          nombre: tramiteServicio['nombre_ts'],
+                          observaciones: tramiteServicio['observaciones_ts'],
+                          tiempo_respuesta: tramiteServicio['tiempo_respuesta_ts']
+                        );
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>DetallesServicios(servicio: servicio)));
                       },
                       child: Container(
                         decoration: BoxDecoration(
