@@ -49,7 +49,7 @@ class _MyAppState extends State<Unidades> {
     home: Scaffold(
       appBar: AppBar(
         title: const Text('Ubicaciones'),
-        backgroundColor: Colors.blue[300],
+        backgroundColor: Colors.blue,
       ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
